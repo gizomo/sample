@@ -1,0 +1,14 @@
+.avatar {
+  color: var(--color-primary);
+  background-color: var(--color-back);
+}
+
+.bordered {
+  @extend .avatar;
+  border: 2px solid var(--color-light);
+}
+
+.bordered:hover {
+  @extend .avatar;
+  border-color: var(--color-dark);
+}

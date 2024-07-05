@@ -1,0 +1,20 @@
+.root {
+  width: 100%;
+  min-height: 100%;
+  line-height: 17px;
+  background-color: var(--color-light);
+}
+
+.empty {
+  @extend .root;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo {
+  height: 2rem;
+}
+
+.table {
+  padding: 2rem;
+}

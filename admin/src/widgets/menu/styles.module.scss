@@ -1,0 +1,35 @@
+.menu {
+  display: flex;
+  width: 100%;
+  min-height: 4rem;
+  padding-left: 4rem;
+  padding-right: 4rem;
+  justify-content: flex-start;
+  align-items: center;
+  background-color: var(--color-back-dark);
+}
+
+.menuItem {
+  padding-top: 0.3rem;
+  padding-bottom: 0.3rem;
+  padding-left: 0.7rem;
+  padding-right: 0.7rem;
+  margin-top: -3px;
+  margin-right: 2rem;
+  color: var(--color-light);
+  user-select: none;
+  text-align: center;
+}
+
+.menuItem:hover {
+  border-radius: 1rem;
+  color: var(--color-light);
+  background-color: var(--color-primary);
+}
+
+.menuItemActive {
+  @extend .menuItem;
+  border-radius: 1rem;
+  color: var(--color-primary);
+  background-color: var(--color-light);
+}

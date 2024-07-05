@@ -1,0 +1,29 @@
+.root {
+  width: 100%;
+  min-height: 100%;
+  line-height: 17px;
+  background-color: var(--color-light);
+}
+
+.empty {
+  @extend .root;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo {
+  height: 2rem;
+}
+
+.description {
+  padding-left: 4rem;
+  padding-right: 4rem;
+}
+
+.descriptionTitle {
+  color: var(--color-primary);
+}
+
+.descriptionLabel {
+  color: var(--color-inactive);
+}
