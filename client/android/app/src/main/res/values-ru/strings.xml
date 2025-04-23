@@ -1,0 +1,11 @@
+<resources>
+    <string name="connection_error_title">Ошибка соединения</string>
+    <string name="connection_error_message">Отсутствует соединение с Интернетом или сервис временно недоступен</string>
+    <string name="ssl_error_message">Ошибка сертификата SSL</string>
+    <string name="open_settings">Настройки системы</string>
+    <string name="download_completed">Загрузка пакета обновления завершена</string>
+    <string name="download_failed">Не удалось загрузить пакет обновления</string>
+    <string name="update_competed">Обновление приложения завершено</string>
+    <string name="update_canceled">Обновление приложения отменено</string>
+    <string name="update_failed">Не удалось обновить приложение</string>
+</resources>

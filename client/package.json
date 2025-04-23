@@ -7,7 +7,12 @@
     "dev-mobile": "vite --config dev.mobile.config.ts",
     "dev-tv": "vite --config dev.tv.config.ts",
     "dev-web": "vite --config dev.web.config.ts",
-    "build": "vite build"
+    "dev-portal": "docker run --name svelte-nginx -v ./portal:/usr/share/nginx/html:ro -v ./debug/nginx:/etc/nginx/conf.d:ro -d -p 8081:80 nginx",
+    "mobile": "rm -fr portal/assets/mobile.js && rm -fr portal/index.html && vite build --config portal.mobile.config.ts",
+    "stb": "rm -fr portal/assets/tv.js && rm -fr portal/index.html && vite build --config portal.tv.config.ts",
+    "web": "rm -fr portal/assets/web.js && rm -fr portal/index.html && vite build --config portal.web.config.ts",
+    "tizen": "rm -fr tizen/assets && rm -fr tizen/index.html && vite build --config tizen.config.ts",
+    "webos": "rm -fr webos/assets && rm -fr webos/index.html && vite build --config webos.config.ts"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^3.1.2",
@@ -18,6 +23,7 @@
     "@types/webostvjs": "^1.2.6",
     "@typescript-eslint/eslint-plugin": "^8.19.0",
     "@typescript-eslint/parser": "^8.19.0",
+    "@vitejs/plugin-legacy": "^5.4.3",
     "eslint": "^8.57.1",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-svelte": "^2.46.1",
@@ -27,7 +33,10 @@
     "vite": "^5.4.9"
   },
   "dependencies": {
+    "@fingerprintjs/fingerprintjs": "^4.6.2",
+    "bowser": "^2.11.0",
     "helpful-decorators": "^2.1.0",
+    "localforage": "^1.10.0",
     "lodash": "^4.17.21",
     "url-parse": "^1.5.10"
   }

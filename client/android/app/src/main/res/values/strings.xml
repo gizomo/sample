@@ -1,0 +1,11 @@
+<resources>
+    <string name="connection_error_title">Connection error</string>
+    <string name="connection_error_message">There is no Internet connection or the service is temporarily unavailable</string>
+    <string name="ssl_error_message">SSL Certificate error</string>
+    <string name="open_settings">System settings</string>
+    <string name="download_completed">Downloading update package is completed</string>
+    <string name="download_failed">Downloading update package has been failed</string>
+    <string name="update_competed">Application update is completed</string>
+    <string name="update_canceled">Application update is canceled</string>
+    <string name="update_failed">Application update is failed</string>
+</resources>

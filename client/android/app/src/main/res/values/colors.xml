@@ -1,0 +1,5 @@
+<resources>
+    <color name="black">#ff000000</color>
+    <color name="white">#ffffffff</color>
+    <color name="splash_background">#ff000000</color>
+</resources>

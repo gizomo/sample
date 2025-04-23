@@ -1,10 +1,10 @@
-import DateTime from 'shared/lib/date-time';
-import Storage from 'shared/lib/storage';
+import DateTime from '../../../utils/date-time';
 import api from '../index';
 import type ApiResponse from '../response';
 import type {ApiRequestParams, IApiMiddleware} from '../core';
 import {RequestMethod} from '../core';
 import {bind} from 'helpful-decorators';
+import {storage} from '../../../core';
 
 export enum AuthResponseCode {
   AUTH = 2,
@@ -129,18 +129,18 @@ export default class JwtAuth implements IApiMiddleware {
   }
 
   private getAuthData(): AuthData {
-    return Boolean(this.authData) ? this.authData : Storage.get('authData');
+    return Boolean(this.authData) ? this.authData : (storage.get('authData') as any);
   }
 
   private setAuthData(data: AuthData | undefined): void {
     if (undefined === data) {
       this.authInit = false;
       this.authData = undefined;
-      Storage.remove('authData');
+      storage.remove('authData');
     } else {
       this.authInit = true;
       this.authData = {...data, expiresAt: this.expiresAt(data.expiresIn)};
-      Storage.set('authData', this.authData);
+      storage.set('authData', this.authData);
     }
   }
 }

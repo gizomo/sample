@@ -24,4 +24,17 @@ export default abstract class AbstractApp {
   }
 
   protected abstract defineRoute(route: string): string;
+  protected abstract homeRoute: string;
+
+  public hasHome(): boolean {
+    return Boolean(this.scenesStack.getSceneByRoute(this.homeRoute));
+  }
+
+  public getHomeRoute(): string {
+    return this.homeRoute;
+  }
+
+  public goHome(): Promise<void> {
+    return this.scenesStack.openAndResetHistory(this.homeRoute);
+  }
 }

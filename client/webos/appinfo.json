@@ -1,0 +1,11 @@
+{
+  "vendor": "sample",
+  "largeIcon": "largeIcon.png",
+  "icon": "icon.png",
+  "main": "index.html",
+  "id": "com.samplee",
+  "title": "Sample",
+  "type": "web",
+  "disableBackHistoryAPI": true,
+  "version": "1.0.0"
+}

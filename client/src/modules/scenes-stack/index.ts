@@ -1,7 +1,10 @@
+import EventListener from '../../utils/event-listener';
 import type AbstractSceneController from './abstract-scene-controller';
 import type Stack from './Stack.svelte';
 import type {Scenes, StackItem} from './types';
+import {KeyEvent} from '../../core/keyboard';
 import {bind} from 'helpful-decorators';
+import {device, keyboard, orientation, platform} from '../../core';
 import {get, type Readable} from 'svelte/store';
 
 interface SceneLifecycleCallbacks {
@@ -11,9 +14,13 @@ interface SceneLifecycleCallbacks {
   keyHandler?: (key: string) => boolean;
 }
 
+export enum SceneEvent {
+  EXIT = 'exit',
+}
+
 export type ScenesStackItem = StackItem<SceneLifecycleCallbacks>;
 
-export default class ScenesStack {
+export default class ScenesStack extends EventListener {
   private readonly controllers: Record<string, AbstractSceneController> = {};
   private readonly startRoute: string;
 
@@ -23,6 +30,8 @@ export default class ScenesStack {
   private waitingOpeningScene: boolean = false;
 
   constructor(controllers: Class<AbstractSceneController>[]) {
+    super();
+
     let stratRoute: string;
 
     controllers.forEach((controller: Class<AbstractSceneController>, index: number) => {
@@ -39,6 +48,31 @@ export default class ScenesStack {
     } else {
       throw new Error('There is no start scene to start application');
     }
+
+    keyboard.on(KeyEvent.ON_DOWN, this.onKeyHandler);
+
+    if (platform.isBrowser() || platform.isIOS()) {
+      window.history.pushState(null, document.title, location.href);
+      window.addEventListener('popstate', this.onBackHandler);
+    }
+  }
+
+  @bind
+  private onKeyHandler(_keyEvent: KeyEvent, event: KeyboardEvent): void {
+    if (keyboard.isBackKey(event)) {
+      this.back();
+    } else {
+      this.currentScene?.onKeyEvent?.(event);
+    }
+  }
+
+  @bind
+  private onBackHandler(): void {
+    if (platform.isBrowser() || platform.isIOS()) {
+      window.history.pushState(null, document.title, this.currentScene?.route);
+    }
+
+    this.back();
   }
 
   private get(route: string): AbstractSceneController {
@@ -69,13 +103,11 @@ export default class ScenesStack {
 
     currentController?.doBeforeSceneHide(this.topStackItem);
 
-    // this.fireEvent(EventScene.BEFORE_CHANGE_SCENE, newSceneController, currentSceneController);
-
     this.controller = nextController;
 
-    // return Endpoints.$sdk.getOrientation().lock(newSceneController.orientation)
-    //   .then(() => action())
-    return action()
+    return orientation
+      .lock(nextController.orientation)
+      .then(() => action())
       .then(() => {
         this.controller = nextController;
         nextController.doAfterSceneShow(this.topStackItem);
@@ -209,6 +241,20 @@ export default class ScenesStack {
 
   public goBack(): Promise<void> {
     return this.lifecycleExecute(this.previousScene, () => this.stack.back(), this.get(this.currentScene.route));
+  }
+
+  public back(): void {
+    if (false === this.currentScene?.onBack?.()) {
+      return;
+    }
+
+    if (this.canGoBack()) {
+      this.goBack().catch(() => undefined);
+    } else if ((platform.isAndroid() && !platform.isAndroidLauncher()) || platform.isTizen() || platform.isWebOS()) {
+      this.fireEvent(SceneEvent.EXIT);
+    } else if (platform.isNative()) {
+      device.exitApp();
+    }
   }
 
   public canGoBack(): boolean {

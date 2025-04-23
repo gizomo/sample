@@ -1,8 +1,8 @@
-import AbstractSceneController from '../../../../modules/scenes-stack/abstract-scene-controller';
 import Splash from './Splash.svelte';
-import {ROUTES} from '..';
+import WebSceneController from '../web-scene-controller';
+import {ROUTES} from '../../../common/scenes';
 
-export default class SplashController extends AbstractSceneController {
+export default class SplashController extends WebSceneController {
   public route: string = ROUTES.SPLASH;
   public scene: typeof Splash = Splash;
 }

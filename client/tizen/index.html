@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, viewport-fit=cover" />
+    <title>&nbsp;</title>
+    <script>
+      window.portalUrl = 'http://192.168.1.82:8081';
+
+      if (localStorage && localStorage.getItem) {
+        try {
+          var title = JSON.parse(localStorage.getItem('defaultOperatorName'));
+
+          if (title) {
+            window.document.title = title;
+          }
+        } catch (err) {}
+      }
+
+      (function () {
+        function getPrefix(isLocal) {
+          var p = Boolean(isLocal) ? '.' : window.portalUrl || '.';
+
+          if (p.slice(p.length, -1) !== '/') {
+            p = p + '/';
+          }
+
+          return p + 'assets/';
+        }
+
+        window.loadAsset = function (a, c, isLocal) {
+          var s = document.createElement('script');
+          s.src = getPrefix(isLocal) + a;
+          var b = document.getElementsByTagName('body')[0],
+            done = false;
+
+          s.onload = s.onreadystatechange = function () {
+            if (!done && (!this.readyState || this.readyState === 'loaded' || this.readyState === 'complete')) {
+              done = true;
+              if (c) {
+                c();
+              }
+              s.onload = s.onreadystatechange = null;
+              b.removeChild(s);
+            }
+          };
+
+          if (!isLocal) {
+            s.onerror = function () {
+              b.removeChild(s);
+              window.loadAsset(a, c, true);
+            };
+          }
+
+          b.appendChild(s);
+        };
+
+        window.importAsset = function (a, c, isLocal) {
+          window.System.import(getPrefix(isLocal) + a).then(
+            function () {
+              if (c) c();
+            },
+            function () {
+              window.importAsset(a, c, true);
+            },
+          );
+        };
+      })();
+    </script>
+
+    <script>
+      if (window.android) window.android.init();
+    </script>
+
+    <script src="$WEBAPIS/webapis/webapis.js"></script>
+  </head>
+  <body>
+    <script>
+      window.loadAsset('polyfills.js', function () {
+        window.importAsset('tv.js');
+      });
+    </script>
+    <div id="app"></div>
+  </body>
+</html>

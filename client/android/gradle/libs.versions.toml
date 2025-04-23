@@ -1,0 +1,20 @@
+[versions]
+ackpine = "0.8.3"
+agp = "8.8.0"
+coreSplashscreen = "1.1.0-rc01"
+okhttp = "5.0.0-alpha.14"
+sentry = "5.3.0"
+simpleAndroidBridge = "1.0.3" # higher versions require minSDK 24 -> Android 7
+webkit = "1.12.1"
+
+[libraries]
+ackpine-core = { group = "ru.solrudev.ackpine", name = "ackpine-core", version.ref = "ackpine" }
+androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "coreSplashscreen" }
+androidx-webkit = { group = "androidx.webkit", name = "webkit", version.ref = "webkit" }
+okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
+simple-android-bridge = { group = "com.github.andycandy-de", name = "simple-android-bridge", version.ref = "simpleAndroidBridge" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+sentry-android-gradle = {id = "io.sentry.android.gradle", version.ref = "sentry"}
+
