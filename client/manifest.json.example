@@ -1,0 +1,19 @@
+{
+  "name": "Sample dev",
+  "short_name": "Sample",
+  "description": "",
+  "display": "standalone",
+  "orientation": "natural",
+  "background_color": "#000000",
+  "launch_handler": {
+    "route_to": "existing-client",
+    "navigate_existing_client": "never"
+  },
+  "icons": [
+    {
+      "src": "https://sample.domain/sample-icons",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}
