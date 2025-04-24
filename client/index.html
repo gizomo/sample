@@ -1,12 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title></title>
-	</head>
-	<body>
-		<div id="app"></div>
-		<script type="module" src="/src/main.ts"></script>
-	</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, viewport-fit=cover, user-scalable=no, minimal-ui" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="theme-color" content="#000000" />
+    <title></title>
+    <script>
+      var s = document.createElement('link');
+      s.setAttribute('rel', 'stylesheet');
+      s.setAttribute('as', 'style');
+      s.setAttribute('href', '/assets/fonts/fonts.css');
+      document.getElementsByTagName('head')[0].append(s);
+    </script>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script async type="module" src="/src/main.ts"></script>
+  </body>
 </html>

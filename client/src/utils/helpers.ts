@@ -70,7 +70,7 @@ export function convertToCamelCase(obj: SomeObjectType = {}): SomeObjectType {
         ...result,
         [_.camelCase(key)]: convertToCamelCase(obj[key]),
       }),
-      {}
+      {},
     );
   }
 
@@ -83,11 +83,7 @@ export enum InterpolationPattern {
   PARENTHESES = '\\(\\(%key%\\)\\)',
 }
 
-export function interpolate(
-  text: string,
-  values?: SomeObjectType,
-  pattern: InterpolationPattern = InterpolationPattern.BRACES
-): string {
+export function interpolate(text: string, values?: SomeObjectType, pattern: InterpolationPattern = InterpolationPattern.BRACES): string {
   if (text && values) {
     Object.keys(values).forEach((key: string) => {
       text = text.replace(new RegExp(pattern.replace('%key%', key), 'gi'), values[key]);
@@ -144,4 +140,78 @@ export function normalizeUrl(url: string): string {
   }
 
   return '';
+}
+
+export function Mixin(baseConstructors: any[]): any {
+  return function (derivedConstructor: any): void {
+    const funcNames: string[] = Object.getOwnPropertyNames(derivedConstructor.prototype);
+    const funcConstructor: string = 'constructor';
+
+    baseConstructors.forEach((baseConstructor: any) => {
+      Object.getOwnPropertyNames(baseConstructor.prototype).forEach((name: string) => {
+        if (funcConstructor !== name && -1 === funcNames.indexOf(name)) {
+          Object.defineProperty(derivedConstructor.prototype, name, Object.getOwnPropertyDescriptor(baseConstructor.prototype, name));
+        }
+      });
+    });
+  };
+}
+
+/**
+ * Convert hex color to rgb with alpha channel.
+ * @param hex - hex color string [default #ffffff]
+ * @param alpha - number from 0 to 1 [default undefined]
+ * @return rgba color string [rgb(255, 255, 255) || rgba(255, 255, 255, 1)]
+ */
+export function hexToRgb(hex: string, alpha?: number): string {
+  if (hex.startsWith('rgb')) {
+    if (undefined !== alpha) {
+      const chunks: string[] = hex.match(/rgb(|a)\(([0-9]{1,3}),(| )+([0-9]{1,3}),(| )+([0-9]{1,3})(|,)(| )+(|[0-9.]+)\)/);
+      return `rgba(${chunks[2]}, ${chunks[4]}, ${chunks[6]}, ${alpha})`;
+    }
+
+    return hex;
+  }
+
+  if (hex.startsWith('#')) {
+    hex = hex.slice(1);
+  }
+
+  if (hex.length === 3) {
+    let res: string = '';
+
+    hex.split('').forEach((c: string) => {
+      res += c;
+      res += c;
+    });
+
+    hex = res;
+  }
+
+  const rgbValues: string = (hex.match(/\w\w/g) || []).map((hex: string) => parseInt(hex, 16)).join(', ');
+
+  return undefined !== alpha ? `rgba(${rgbValues}, ${alpha})` : `rgb(${rgbValues})`;
+}
+
+export function addAlphaToRgb(rgb: string, alpha: number): string {
+  return rgb.replace(/(rgb)\(([0-9]+),\s+([0-9]+),\s+([0-9]+)/, 'rgba($2, $3, $4, ' + alpha);
+}
+
+export function compareVersions(left: string, right: string): number {
+  if ('string' !== typeof left || 'string' !== typeof right) {
+    return;
+  }
+
+  const a: string[] = left.split('.');
+  const b: string[] = right.split('.');
+
+  for (let i: number = 0; i < Math.max(a.length, b.length); i++) {
+    if ((a[i] && !b[i] && parseInt(a[i]) > 0) || parseInt(a[i]) > parseInt(b[i])) {
+      return 1;
+    } else if ((b[i] && !a[i] && parseInt(b[i]) > 0) || parseInt(a[i]) < parseInt(b[i])) {
+      return -1;
+    }
+  }
+
+  return 0;
 }
